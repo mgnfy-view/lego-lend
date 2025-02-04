@@ -9,14 +9,14 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <h3 align="center">Swings.fun</h3>
+  <h3 align="center">LegoLend</h3>
 
   <p align="center">
-    Custom implementation of a memecoin launchpad on Solana
+    A composable lending protocol built on Solana
     <br />
-    <a href="https://github.com/mgnfy-view/swings-dot-fun/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
+    <a href="https://github.com/mgnfy-view/lego-lend/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
     ·
-    <a href="https://github.com/mgnfy-view/swings-dot-fun/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
+    <a href="https://github.com/mgnfy-view/lego-lend/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
   </p>
 </div>
 
@@ -48,7 +48,7 @@
 
 ## About The Project
 
-Swings.fun is a custom implementation of a memecoin launchpad on Solana. Inspired from Pump.fun, it encapsulates functionality to configure bonding curve parameters, create tokens with bonding curves, buy/sell tokens and fill up the curve, migrate the raised liquidity to Raydium V5, and withdraw accumulated fees (admin only function).
+LegoLend is a composable lending protocol built on Solana.
 
 ### Built With
 
@@ -69,13 +69,13 @@ Make sure you have yarn, git, rust, solana-cli, and anchor installed and configu
 Clone the repo,
 
 ```shell
-git clone https://github.com/mgnfy-view/swings-dot-fun.git
+git clone https://github.com/mgnfy-view/lego-lend.git
 ```
 
 cd into the repo, and install the necessary dependencies,
 
 ```shell
-cd swings-dot-fun
+cd lego-lend
 yarn install
 anchor build
 ```
@@ -97,7 +97,7 @@ That's it, you are good to go now!
 -   [x] Unit tests
 -   [x] Write a good README.md
 
-See the [open issues](https://github.com/mgnfy-view/swings-dot-fun/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/mgnfy-view/lego-lend/issues) for a full list of proposed features (and known issues).
 
 <!-- CONTRIBUTING -->
 
@@ -131,14 +131,14 @@ Here's a gateway to all my socials, don't forget to hit me up!
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
-[contributors-shield]: https://img.shields.io/github/contributors/mgnfy-view/swings-dot-fun.svg?style=for-the-badge
-[contributors-url]: https://github.com/mgnfy-view/swings-dot-fun/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/mgnfy-view/swings-dot-fun.svg?style=for-the-badge
-[forks-url]: https://github.com/mgnfy-view/swings-dot-fun/network/members
-[stars-shield]: https://img.shields.io/github/stars/mgnfy-view/swings-dot-fun.svg?style=for-the-badge
-[stars-url]: https://github.com/mgnfy-view/swings-dot-fun/stargazers
-[issues-shield]: https://img.shields.io/github/issues/mgnfy-view/swings-dot-fun.svg?style=for-the-badge
-[issues-url]: https://github.com/mgnfy-view/swings-dot-fun/issues
-[license-shield]: https://img.shields.io/github/license/mgnfy-view/swings-dot-fun.svg?style=for-the-badge
-[license-url]: https://github.com/mgnfy-view/swings-dot-fun/blob/master/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/mgnfy-view/lego-lend.svg?style=for-the-badge
+[contributors-url]: https://github.com/mgnfy-view/lego-lend/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/mgnfy-view/lego-lend.svg?style=for-the-badge
+[forks-url]: https://github.com/mgnfy-view/lego-lend/network/members
+[stars-shield]: https://img.shields.io/github/stars/mgnfy-view/lego-lend.svg?style=for-the-badge
+[stars-url]: https://github.com/mgnfy-view/lego-lend/stargazers
+[issues-shield]: https://img.shields.io/github/issues/mgnfy-view/lego-lend.svg?style=for-the-badge
+[issues-url]: https://github.com/mgnfy-view/lego-lend/issues
+[license-shield]: https://img.shields.io/github/license/mgnfy-view/lego-lend.svg?style=for-the-badge
+[license-url]: https://github.com/mgnfy-view/lego-lend/blob/master/LICENSE.txt
 [linktree-url]: https://linktr.ee/mgnfy.view
