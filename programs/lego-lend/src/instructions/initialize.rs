@@ -37,6 +37,7 @@ impl Initialize<'_> {
 
         platform_config.owner = owner;
         platform_config.fee_recipient = fee_recipient;
+        platform_config.bump = ctx.bumps.platform_config;
 
         emit!(Initialized {
             owner: owner,

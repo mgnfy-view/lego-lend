@@ -33,4 +33,12 @@ pub mod lego_lend {
     pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
         Initialize::initialize(ctx)
     }
+
+    pub fn transfer_ownership(ctx: Context<TransferOwnership>) -> Result<()> {
+        TransferOwnership::transfer_ownership(ctx)
+    }
+
+    pub fn set_fee_recipient(ctx: Context<SetFeeRecipient>) -> Result<()> {
+        SetFeeRecipient::set_fee_recipient(ctx)
+    }
 }
