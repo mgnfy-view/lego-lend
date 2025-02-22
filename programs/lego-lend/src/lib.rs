@@ -6,12 +6,14 @@ pub mod errors;
 pub mod events;
 pub mod instructions;
 pub mod state;
+pub mod utils;
 
 pub use constants::*;
 pub use errors::*;
 pub use events::*;
 pub use instructions::*;
 pub use state::*;
+pub use utils::*;
 
 #[cfg(not(feature = "no-entrypoint"))]
 security_txt! {
@@ -40,5 +42,13 @@ pub mod lego_lend {
 
     pub fn set_fee_recipient(ctx: Context<SetFeeRecipient>) -> Result<()> {
         SetFeeRecipient::set_fee_recipient(ctx)
+    }
+
+    pub fn set_fee(ctx: Context<SetFee>, new_fee: u64) -> Result<()> {
+        SetFee::set_fee(ctx, new_fee)
+    }
+
+    pub fn create_market(ctx: Context<CreateMarket>, lltv: u64, fee: u64) -> Result<()> {
+        CreateMarket::create_market(ctx, lltv, fee)
     }
 }

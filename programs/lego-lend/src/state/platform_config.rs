@@ -5,5 +5,6 @@ use anchor_lang::prelude::*;
 pub struct PlatformConfig {
     pub owner: Pubkey,
     pub fee_recipient: Pubkey,
+
     pub bump: u8,
 }
