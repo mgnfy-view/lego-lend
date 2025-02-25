@@ -1085,6 +1085,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "irm-base"
+version = "0.1.0"
+dependencies = [
+ "anchor-lang",
+ "solana-security-txt",
+]
+
+[[package]]
 name = "itertools"
 version = "0.10.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1139,6 +1147,8 @@ version = "0.1.0"
 dependencies = [
  "anchor-lang",
  "anchor-spl",
+ "irm-base",
+ "oracle-base",
  "solana-security-txt",
 ]
 
@@ -1331,6 +1341,14 @@ name = "opaque-debug"
 version = "0.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c08d65885ee38876c4f86fa503fb49d7b507c2b62552df7c70b2fce627e06381"
+
+[[package]]
+name = "oracle-base"
+version = "0.1.0"
+dependencies = [
+ "anchor-lang",
+ "solana-security-txt",
+]
 
 [[package]]
 name = "parking_lot"
