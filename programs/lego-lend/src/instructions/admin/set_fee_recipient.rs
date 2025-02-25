@@ -1,6 +1,6 @@
 use anchor_lang::prelude::*;
 
-use crate::{constants::*, errors::*, events::*, PlatformConfig};
+use crate::{constants::*, events::*, PlatformConfig};
 
 #[derive(Accounts)]
 pub struct SetFeeRecipient<'info> {
@@ -19,8 +19,6 @@ pub struct SetFeeRecipient<'info> {
         bump,
     )]
     pub platform_config: Account<'info, PlatformConfig>,
-
-    pub system_program: Program<'info, System>,
 }
 
 impl SetFeeRecipient<'_> {
@@ -28,11 +26,6 @@ impl SetFeeRecipient<'_> {
         let platform_config = &mut ctx.accounts.platform_config;
 
         let new_fee_recipient = ctx.accounts.new_fee_recipient.key();
-
-        require!(
-            new_fee_recipient != Pubkey::default(),
-            CustomErrors::NoDefaultPubkey,
-        );
 
         platform_config.fee_recipient = new_fee_recipient;
 

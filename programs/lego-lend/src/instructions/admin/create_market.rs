@@ -1,16 +1,13 @@
 use anchor_lang::prelude::*;
-use anchor_spl::{
-    token_2022::InitializeAccount3,
-    token_interface::{initialize_account3, Mint, TokenInterface},
-};
+use anchor_spl::token_interface::{Mint, TokenInterface};
 
-use crate::{constants::*, errors::*, Market, MarketCreated, PlatformConfig};
+use crate::{constants::*, create_token_account, errors::*, Market, MarketCreated, PlatformConfig};
 
 #[derive(Accounts)]
 pub struct CreateMarket<'info> {
     #[account(
         mut,
-        address = platform_config.owner
+        address = platform_config.owner,
     )]
     pub creator: Signer<'info>,
 
@@ -72,45 +69,65 @@ impl CreateMarket<'_> {
 
         let market = &mut ctx.accounts.market;
 
-        let loan_token = ctx.accounts.loan_token.key();
-        let collateral_token = ctx.accounts.collateral_token.key();
-        let oracle = ctx.accounts.oracle.key();
-        let irm = ctx.accounts.irm.key();
+        let loan_token_pubkey = ctx.accounts.loan_token.key();
+        let collateral_token_pubkey = ctx.accounts.collateral_token.key();
+        let oracle_pubkey = ctx.accounts.oracle.key();
+        let irm_pubkey = ctx.accounts.irm.key();
+        let market_pubkey = market.key();
 
-        initialize_account3(CpiContext::new(
-            ctx.accounts.token_program.to_account_info(),
-            InitializeAccount3 {
-                account: ctx.accounts.loan_token_account.to_account_info(),
-                mint: ctx.accounts.loan_token.to_account_info(),
-                authority: market.to_account_info(),
-            },
-        ))?;
-        initialize_account3(CpiContext::new(
-            ctx.accounts.token_program.to_account_info(),
-            InitializeAccount3 {
-                account: ctx.accounts.collateral_token_account.to_account_info(),
-                mint: ctx.accounts.collateral_token.to_account_info(),
-                authority: market.to_account_info(),
-            },
-        ))?;
+        let loan_token_account_bump = &[ctx.bumps.loan_token_account];
+        let loan_token_account_signer = &[
+            seeds::VAULT,
+            market_pubkey.as_ref(),
+            loan_token_pubkey.as_ref(),
+            loan_token_account_bump,
+        ][..];
+        create_token_account(
+            &market.to_account_info(),
+            &ctx.accounts.creator.to_account_info(),
+            &ctx.accounts.loan_token_account.to_account_info(),
+            &ctx.accounts.loan_token.to_account_info(),
+            &ctx.accounts.system_program.to_account_info(),
+            &ctx.accounts.token_program.to_account_info(),
+            loan_token_account_signer,
+        )?;
 
-        market.market_params.loan_token = loan_token;
-        market.market_params.collateral_token = collateral_token;
-        market.market_params.oracle = oracle;
-        market.market_params.irm = irm;
+        let collateral_token_account_bump = &[ctx.bumps.collateral_token_account];
+        let collateral_token_account_signer = &[
+            seeds::VAULT,
+            market_pubkey.as_ref(),
+            collateral_token_pubkey.as_ref(),
+            collateral_token_account_bump,
+        ][..];
+        create_token_account(
+            &market.to_account_info(),
+            &ctx.accounts.creator.to_account_info(),
+            &ctx.accounts.collateral_token_account.to_account_info(),
+            &ctx.accounts.collateral_token.to_account_info(),
+            &ctx.accounts.system_program.to_account_info(),
+            &ctx.accounts.token_program.to_account_info(),
+            collateral_token_account_signer,
+        )?;
+
+        market.market_params.loan_token = loan_token_pubkey;
+        market.market_params.collateral_token = collateral_token_pubkey;
+        market.market_params.oracle = oracle_pubkey;
+        market.market_params.irm = irm_pubkey;
         market.market_params.lltv = lltv;
 
         market.fee = fee;
         market.last_update = Clock::get()?.unix_timestamp as u64;
 
         market.bump = ctx.bumps.market;
+        market.loan_token_account_bump = ctx.bumps.loan_token_account;
+        market.collateral_token_account_bump = ctx.bumps.collateral_token_account;
 
         emit!(MarketCreated {
             market: market.key(),
-            loan_token: loan_token,
-            collateral_token: collateral_token,
-            oracle: oracle,
-            irm: irm,
+            loan_token: loan_token_pubkey,
+            collateral_token: collateral_token_pubkey,
+            oracle: oracle_pubkey,
+            irm: irm_pubkey,
             lltv: lltv,
             fee: fee
         });

@@ -13,6 +13,8 @@ pub struct Market {
     pub fee: u64,
 
     pub bump: u8,
+    pub loan_token_account_bump: u8,
+    pub collateral_token_account_bump: u8,
 }
 
 #[derive(Clone, InitSpace, AnchorSerialize, AnchorDeserialize)]

@@ -31,8 +31,8 @@ impl Initialize<'_> {
         let fee_recipient = ctx.accounts.fee_recipient.key();
 
         require!(
-            owner != Pubkey::default() && fee_recipient != Pubkey::default(),
-            CustomErrors::NoDefaultPubkey,
+            fee_recipient != Pubkey::default(),
+            CustomErrors::NoDefaultPubkey
         );
 
         platform_config.owner = owner;

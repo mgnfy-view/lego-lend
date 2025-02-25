@@ -30,8 +30,6 @@ pub struct SetFee<'info> {
         bump = market.bump,
     )]
     pub market: Account<'info, Market>,
-
-    pub system_program: Program<'info, System>,
 }
 
 impl SetFee<'_> {

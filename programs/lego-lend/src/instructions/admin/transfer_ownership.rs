@@ -18,8 +18,6 @@ pub struct TransferOwnership<'info> {
         bump,
     )]
     pub platform_config: Account<'info, PlatformConfig>,
-
-    pub system_program: Program<'info, System>,
 }
 
 impl TransferOwnership<'_> {
