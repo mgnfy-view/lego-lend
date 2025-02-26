@@ -12,7 +12,7 @@
   <h3 align="center">LegoLend</h3>
 
   <p align="center">
-    A composable lending protocol built on Solana
+    A composable lending protocol built on Solana, and inspired by Morpho Blue
     <br />
     <a href="https://github.com/mgnfy-view/lego-lend/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
     ·
@@ -50,7 +50,7 @@
 
 LegoLend is a composable lending protocol built on Solana. It is heavily inspired by Morpho Blue, one of the hottest lending protocols from 2024.
 
-LegoLend allows you to create lending pools for a pair of asstes by attaching your custom oracles and interest rate models. It represents a user's supplied and borrowed assets in the form of shares, which enables any bad debt to be spread among the lenders. Due to its individual pool approach, LegoLend provides a very high liquidation loan to value threshold and, consequently, generates higher interest for lenders.
+LegoLend allows you to create lending pools for any pair of assets by attaching your custom oracles and interest rate models. It represents a user's supplied and borrowed assets in the form of shares, which enables any bad debt to be spread among the lenders. Due to its individual pool approach, LegoLend provides a very high liquidation loan to value threshold and, consequently, generates higher interest for lenders.
 
 Lenders are not expected to interact directly with LegoLend, instead they should use allocation strategy vaults attested by LegoLend to split their deposits accross multiple lending pools. This also activates their deposit to be eligible for any additional points/incentives/rewards provided by the allocation strategy vault manager.
 
