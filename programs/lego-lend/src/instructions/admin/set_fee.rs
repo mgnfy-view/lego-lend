@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
 use anchor_spl::token_interface::Mint;
 
-use crate::{constants::*, errors::*, FeeSet, Market, PlatformConfig};
+use crate::{constants::*, FeeSet, Market, PlatformConfig};
 
 // Note: Accrue interest before changing fees
 
@@ -34,9 +34,11 @@ pub struct SetFee<'info> {
 
 impl SetFee<'_> {
     pub fn set_fee(ctx: Context<SetFee>, new_fee: u64) -> Result<()> {
-        require!(new_fee <= general::MAX_FEE, CustomErrors::MaxFeeExceeded);
+        let market = &mut ctx.accounts.market;
 
-        ctx.accounts.market.fee = new_fee;
+        market.fee = new_fee;
+
+        market.validate_fee()?;
 
         emit!(FeeSet { new_fee: new_fee });
 

@@ -1,6 +1,6 @@
 use anchor_lang::prelude::*;
 
-use crate::{constants::*, errors::*, events::*, BorrowRate};
+use crate::{constants::*, events::*, BorrowRate};
 
 #[derive(Accounts)]
 pub struct Initialize<'info> {
@@ -23,11 +23,11 @@ impl Initialize<'_> {
     pub fn initialize(ctx: Context<Initialize>, borrow_rate: u64) -> Result<()> {
         let borrow_rate_account = &mut ctx.accounts.borrow_rate;
 
-        require!(borrow_rate != 0, CustomErrors::ValueZero);
-
         borrow_rate_account.borrow_rate = borrow_rate;
 
         borrow_rate_account.bump = ctx.bumps.borrow_rate;
+
+        borrow_rate_account.validate_borrow_rate()?;
 
         emit!(Initialized {
             borrow_rate: borrow_rate

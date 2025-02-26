@@ -29,6 +29,8 @@ impl SetFeeRecipient<'_> {
 
         platform_config.fee_recipient = new_fee_recipient;
 
+        platform_config.validate_fee_recipient()?;
+
         emit!(FeeRecipientSet {
             new_fee_recipient: new_fee_recipient
         });

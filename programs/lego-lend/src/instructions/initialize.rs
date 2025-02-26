@@ -1,6 +1,6 @@
 use anchor_lang::prelude::*;
 
-use crate::{constants::*, errors::*, Initialized, PlatformConfig};
+use crate::{constants::*, Initialized, PlatformConfig};
 
 #[derive(Accounts)]
 pub struct Initialize<'info> {
@@ -30,14 +30,11 @@ impl Initialize<'_> {
         let owner = ctx.accounts.owner.key();
         let fee_recipient = ctx.accounts.fee_recipient.key();
 
-        require!(
-            fee_recipient != Pubkey::default(),
-            CustomErrors::NoDefaultPubkey
-        );
-
         platform_config.owner = owner;
         platform_config.fee_recipient = fee_recipient;
         platform_config.bump = ctx.bumps.platform_config;
+
+        platform_config.validate_fee_recipient()?;
 
         emit!(Initialized {
             owner: owner,

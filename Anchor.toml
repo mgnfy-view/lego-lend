@@ -25,9 +25,18 @@ wallet = "/home/sahil/.config/solana/id.json"
 
 [scripts]
 test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/legoLend/admin/createMarket.test.ts"
+
+test_irm_base_initialize = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/irmBase/initialize.test.ts"
+test_irm_base_update = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/irmBase/update.test.ts"
+
 test_lego_lend_initialize = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/legoLend/initialize.test.ts"
 test_lego_lend_set_fee_recipient = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/legoLend/admin/setFeeRecipient.test.ts"
 test_lego_lend_transfer_ownership = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/legoLend/admin/transferOwnership.test.ts"
+test_lego_lend_create_market = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/legoLend/admin/createMarket.test.ts"
+test_lego_lend_accrue_interest = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/legoLend/accrueInterest.test.ts"
+
+test_oracle_base_initialize = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/oracleBase/initialize.test.ts"
+test_oracle_base_update = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/oracleBase/update.test.ts"
 
 [test]
 startup_wait = 5000

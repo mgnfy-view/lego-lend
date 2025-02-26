@@ -9,7 +9,7 @@ describe("IrmBase", () => {
     const { owner, irmBase } = setup();
     const borrowRate = new anchor.BN(1e9);
 
-    it("Initialization fails if price passed is 0", async () => {
+    it("Initialization fails if borrow rate passed is 0", async () => {
         try {
             await programMethods.irmBase.initialize(owner, new anchor.BN(0), irmBase);
         } catch (err) {

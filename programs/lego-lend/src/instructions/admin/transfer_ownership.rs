@@ -1,6 +1,6 @@
 use anchor_lang::prelude::*;
 
-use crate::{constants::*, errors::*, events::*, PlatformConfig};
+use crate::{constants::*, events::*, PlatformConfig};
 
 #[derive(Accounts)]
 pub struct TransferOwnership<'info> {
@@ -25,11 +25,6 @@ impl TransferOwnership<'_> {
         let platform_config = &mut ctx.accounts.platform_config;
 
         let new_owner = ctx.accounts.new_owner.key();
-
-        require!(
-            new_owner != Pubkey::default(),
-            CustomErrors::NoDefaultPubkey,
-        );
 
         platform_config.owner = new_owner;
 

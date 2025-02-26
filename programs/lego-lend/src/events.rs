@@ -31,3 +31,11 @@ pub struct MarketCreated {
 pub struct FeeSet {
     pub new_fee: u64,
 }
+
+#[event]
+pub struct InterestAccrued {
+    pub market: Pubkey,
+    pub borrow_rate: u64,
+    pub interest: u64,
+    pub fee_shares: u64,
+}

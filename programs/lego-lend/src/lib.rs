@@ -9,12 +9,10 @@ pub mod instructions;
 pub mod state;
 pub mod utils;
 
-pub use constants::*;
 pub use errors::*;
 pub use events::*;
 pub use instructions::*;
 pub use state::*;
-pub use utils::*;
 
 #[cfg(not(feature = "no-entrypoint"))]
 security_txt! {
@@ -51,5 +49,9 @@ pub mod lego_lend {
 
     pub fn create_market(ctx: Context<CreateMarket>, lltv: u64, fee: u64) -> Result<()> {
         CreateMarket::create_market(ctx, lltv, fee)
+    }
+
+    pub fn accrue_interest(ctx: Context<AccrueInterest>) -> Result<()> {
+        AccrueInterest::accrue_interest(ctx)
     }
 }

@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
 use anchor_spl::token_interface::{Mint, TokenInterface};
 
-use crate::{constants::*, create_token_account, errors::*, Market, MarketCreated, PlatformConfig};
+use crate::{constants, utils, Market, MarketCreated, PlatformConfig};
 
 #[derive(Accounts)]
 pub struct CreateMarket<'info> {
@@ -12,7 +12,7 @@ pub struct CreateMarket<'info> {
     pub creator: Signer<'info>,
 
     #[account(
-        seeds = [seeds::PLATFORM_CONFIG],
+        seeds = [constants::seeds::PLATFORM_CONFIG],
         bump = platform_config.bump,
     )]
     pub platform_config: Account<'info, PlatformConfig>,
@@ -34,8 +34,8 @@ pub struct CreateMarket<'info> {
     #[account(
         init,
         payer = creator,
-        space = general::ANCHOR_DISCRIMINATOR_SIZE + Market::INIT_SPACE,
-        seeds = [seeds::MARKET, loan_token.key().as_ref(), collateral_token.key().as_ref()],
+        space = constants::general::ANCHOR_DISCRIMINATOR_SIZE + Market::INIT_SPACE,
+        seeds = [constants::seeds::MARKET, loan_token.key().as_ref(), collateral_token.key().as_ref()],
         bump,
     )]
     pub market: Account<'info, Market>,
@@ -44,7 +44,7 @@ pub struct CreateMarket<'info> {
     /// instruction to avoid stack overflow.
     #[account(
         mut,
-        seeds = [seeds::VAULT, market.key().as_ref(), loan_token.key().as_ref()],
+        seeds = [constants::seeds::VAULT, market.key().as_ref(), loan_token.key().as_ref()],
         bump,
     )]
     pub loan_token_account: UncheckedAccount<'info>,
@@ -53,7 +53,7 @@ pub struct CreateMarket<'info> {
     /// instruction to avoid stack overflow.
     #[account(
         mut,
-        seeds = [seeds::VAULT, market.key().as_ref(), collateral_token.key().as_ref()],
+        seeds = [constants::seeds::VAULT, market.key().as_ref(), collateral_token.key().as_ref()],
         bump,
     )]
     pub collateral_token_account: UncheckedAccount<'info>,
@@ -64,9 +64,6 @@ pub struct CreateMarket<'info> {
 
 impl CreateMarket<'_> {
     pub fn create_market(ctx: Context<CreateMarket>, lltv: u64, fee: u64) -> Result<()> {
-        require!(lltv <= general::E9, CustomErrors::MaxLltvExceeded);
-        require!(fee <= general::MAX_FEE, CustomErrors::MaxFeeExceeded);
-
         let market = &mut ctx.accounts.market;
 
         let loan_token_pubkey = ctx.accounts.loan_token.key();
@@ -77,12 +74,12 @@ impl CreateMarket<'_> {
 
         let loan_token_account_bump = &[ctx.bumps.loan_token_account];
         let loan_token_account_signer = &[
-            seeds::VAULT,
+            constants::seeds::VAULT,
             market_pubkey.as_ref(),
             loan_token_pubkey.as_ref(),
             loan_token_account_bump,
         ][..];
-        create_token_account(
+        utils::general::create_token_account(
             &market.to_account_info(),
             &ctx.accounts.creator.to_account_info(),
             &ctx.accounts.loan_token_account.to_account_info(),
@@ -94,12 +91,12 @@ impl CreateMarket<'_> {
 
         let collateral_token_account_bump = &[ctx.bumps.collateral_token_account];
         let collateral_token_account_signer = &[
-            seeds::VAULT,
+            constants::seeds::VAULT,
             market_pubkey.as_ref(),
             collateral_token_pubkey.as_ref(),
             collateral_token_account_bump,
         ][..];
-        create_token_account(
+        utils::general::create_token_account(
             &market.to_account_info(),
             &ctx.accounts.creator.to_account_info(),
             &ctx.accounts.collateral_token_account.to_account_info(),
@@ -116,11 +113,14 @@ impl CreateMarket<'_> {
         market.market_params.lltv = lltv;
 
         market.fee = fee;
-        market.last_update = Clock::get()?.unix_timestamp as u64;
+        market.last_update = u64::try_from(Clock::get()?.unix_timestamp).unwrap();
 
         market.bump = ctx.bumps.market;
         market.loan_token_account_bump = ctx.bumps.loan_token_account;
         market.collateral_token_account_bump = ctx.bumps.collateral_token_account;
+
+        market.validate_lltv()?;
+        market.validate_fee()?;
 
         emit!(MarketCreated {
             market: market.key(),
